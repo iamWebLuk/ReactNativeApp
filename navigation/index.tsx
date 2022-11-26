@@ -16,8 +16,10 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import LoginScreen from '../components/Login/LoginScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import Register from "../components/Register";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -43,6 +45,8 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>
   );
 }
@@ -92,6 +96,14 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
+        <BottomTab.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{
+                title: 'New Tab',
+                tabBarIcon: ({ color }) => <TabBarIcon name='signal' color={color} />
+            }}
+        />
     </BottomTab.Navigator>
   );
 }
