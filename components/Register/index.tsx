@@ -1,39 +1,41 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Button} from "react-native";
-import { RootStackScreenProps } from "../../types";
-import { StackActions } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from 'react';
+import { View, Button } from 'react-native';
+import { RootStackScreenProps } from '../../types';
+import { StackActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
-import useStarWars from "../Login/useStarWars";
-import {createUserWithEmailAndPassword} from "firebase/auth";
-import {auth} from "../../firebase";
-import {FontAwesome} from "@expo/vector-icons";
+import useStarWars from '../Login/useStarWars';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { FontAwesome } from '@expo/vector-icons';
+import style from '../Register/style';
 
-const Register = ({ navigation: { goBack }}: RootStackScreenProps<'Register'>)  => {
-
+const Register = ({
+    navigation: { goBack },
+}: RootStackScreenProps<'Register'>) => {
     const navigation = useNavigation();
 
-    const [userName, setUserName] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmpassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [hidePassword, setHidePassword] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isShown, setIsShown] = useState(false);
-
 
     const handleLogin = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((usercredentials) => {
-                const user = usercredentials.user;
-                console.log(user.email);
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
-    }
+        if (handlePassword()) {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((usercredentials) => {
+                    auth.signOut().then(() => {});
+                    const user = usercredentials.user;
+                    console.log(user.email);
+                })
+                .catch((err) => {
+                    alert(err.message);
+                });
+        } else {
+            alert('Password must be the same');
+        }
+    };
 
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
@@ -42,69 +44,68 @@ const Register = ({ navigation: { goBack }}: RootStackScreenProps<'Register'>)  
             } else {
                 setIsLoggedIn(false);
             }
-        })
-    },[])
-
+        });
+    }, []);
 
     const handleShow = () => {
-        setHidePassword(!hidePassword)
-    }
+        setHidePassword(!hidePassword);
+    };
 
     const handlePassword = () => {
         return password === confirmPassword;
-    }
+    };
 
-    const handleShowPassword = () => {
-       return setIsShown(!isShown);
-    }
-
-    const seeCam = () => {
+    const showIcon = () => {
         if (hidePassword) {
-            return <FontAwesome name='eye' onPress={handleShow} size={25}/>
+            return 'eye';
         } else {
-            return <FontAwesome name='eye-slash' onPress={handleShow} size={25}/>
+            return 'eye-off';
         }
-    }
+    };
 
-    return(
-        <View>
-            <Text>Abc</Text>
-            <TextInput label={"Username eingeben"} value={userName} onChangeText={text => {
-                setUserName(text)
-                console.log(userName)
-            }}/>
-            <TextInput label={"Vorname eingeben"} value={firstName} onChangeText={text => {
-                setFirstName(text)
-                console.log(firstName)
-            }}/>
-            <TextInput label={"Nachname eingeben"} value={lastName} onChangeText={text => {
-                setLastName(text)
-                console.log(lastName)
-            }}/>
-            <View style={{
-                        borderColor: 'grey',
-                        borderWidth: 1,
-                        padding: 10,
-                        flexDirection: 'row',
-                        alignItems: 'baseline',
-                        alignSelf: 'stretch',
-                        height: 60,}}>
-                <View style={{flexDirection: 'row'}}>
-            <TextInput label={"Passwort eingeben"} style={{ width:'90%' }} value={password} secureTextEntry={isShown} onChangeText={text => {
-                setPassword(text)
-                console.log(password)
-            }}/>
-                {seeCam()}
-                </View>
-            </View>
-            <TextInput label={"Passwort erneut eingeben"} value={confirmPassword} onChangeText={text => {
-                setConfirmpassword(text)
-                console.log(confirmPassword)
-            }}/>
-            <Button title={"Register"} onPress={handleLogin}/>
-            <Button title={'Go back'} onPress={() => navigation.navigate('Root')} />
+    return (
+        <View style={style.container}>
+            <TextInput
+                placeholder={'Email eingeben'}
+                value={email}
+                onChangeText={(text) => {
+                    setEmail(text);
+                    console.log(email);
+                }}
+            />
+            <TextInput
+                label={'Passwort eingeben'}
+                value={password}
+                secureTextEntry={hidePassword}
+                onChangeText={(text) => {
+                    setPassword(text);
+                    console.log(password);
+                }}
+                right={
+                    <TextInput.Icon
+                        icon={showIcon()}
+                        onPress={() =>
+                            console.log(setHidePassword(!hidePassword))
+                        }
+                    />
+                }
+            />
+            <TextInput
+                label={'Passwort erneut eingeben'}
+                value={confirmPassword}
+                secureTextEntry={hidePassword}
+                onChangeText={(text) => {
+                    setConfirmPassword(text);
+                    console.log(password);
+                }}
+            />
+            <Button title={'Register'} onPress={handleLogin} />
+            <Button
+                title={'Go back'}
+                onPress={() => navigation.navigate('Root')}
+            />
         </View>
-     )
+    );
 };
 
 export default Register;
