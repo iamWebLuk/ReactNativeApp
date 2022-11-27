@@ -100,10 +100,6 @@ const Register = ({
                 }}
             />
             <Button title={'Register'} onPress={handleLogin} />
-            <Button
-                title={'Go back'}
-                onPress={() => navigation.navigate('Root')}
-            />
         </View>
     );
 };
