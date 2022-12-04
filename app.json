@@ -19,7 +19,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "We need another camera."
+      }
     },
     "android": {
       "adaptiveIcon": {
