@@ -16,7 +16,7 @@ const Dot = ({ color }: DotProps) => {
 
     return (
         <View>
-            <span style={style(color).dot} />
+            <Text style={style(color).dot} />
         </View>
     );
 };

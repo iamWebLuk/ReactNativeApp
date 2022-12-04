@@ -1,13 +1,14 @@
-import { Button, StyleSheet } from 'react-native';
+import { StyleSheet, View, Text, Appearance } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
 import Dot from '../components/UploadImages/Dot';
 import { db } from '../firebase';
 import { useEffect, useState } from 'react';
 import { onSnapshot, collection } from 'firebase/firestore';
 import firebase from 'firebase/compat';
 import DocumentData = firebase.firestore.DocumentData;
+import { colorSchema, textColor } from '../globalStyles';
+import UploadImages from '../components/UploadImages/UploadImages';
 
 export default function TabTwoScreen() {
     const [data, setData] = useState<DocumentData>([]);
@@ -30,18 +31,25 @@ export default function TabTwoScreen() {
             <Text style={styles.title}>Tab Two</Text>
             <View
                 style={styles.separator}
-                lightColor="#eee"
-                darkColor="rgba(255,255,255,0.1)"
+                // lightColor="white"
+                // darkColor="rgba(255,255,255,0.1)"
             />
             <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
             {data.map((color: any) => {
                 return (
-                    <View nativeID={color.id}>
+                    <View key={color.id}>
                         <Dot color={color.value} />
-                        <View>{color.name}</View>
+                        <Text
+                            style={{
+                                color: textColor(),
+                            }}
+                        >
+                            {color.name}
+                        </Text>
                     </View>
                 );
             })}
+            {/*<UploadImages />*/}
         </View>
     );
 }

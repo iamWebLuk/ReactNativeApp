@@ -3,7 +3,7 @@ import { View, Button } from 'react-native';
 import { RootStackScreenProps } from '../../types';
 import { StackActions } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-import { TextInput } from 'react-native-paper';
+import { TextInput, Provider } from 'react-native-paper';
 import useStarWars from '../Login/useStarWars';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
@@ -64,7 +64,8 @@ const Register = ({
     };
 
     return (
-        <View style={style.container}>
+        // <View style={style.container}>
+        <Provider>
             <TextInput
                 placeholder={'Email eingeben'}
                 value={email}
@@ -100,7 +101,8 @@ const Register = ({
                 }}
             />
             <Button title={'Register'} onPress={handleLogin} />
-        </View>
+            {/*</View>*/}
+        </Provider>
     );
 };
 

@@ -5,7 +5,7 @@ import useStarWars from './useStarWars';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { RootStackScreenProps } from '../../types';
-import { Snackbar, TextInput } from 'react-native-paper';
+import { Snackbar, TextInput, Provider } from 'react-native-paper';
 
 const LoginScreen = ({ navigation }: RootStackScreenProps<'LoginScreen'>) => {
     const [email, setEmail] = useState('');
@@ -57,7 +57,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'LoginScreen'>) => {
     };
 
     return (
-        <View>
+        <Provider>
             <Snackbar
                 wrapperStyle={{ top: 0 }}
                 style={{
@@ -121,7 +121,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'LoginScreen'>) => {
                     <Button title={'Log Out'} onPress={signOut} />
                 </View>
             )}
-        </View>
+        </Provider>
     );
 };
 
