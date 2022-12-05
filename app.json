@@ -21,7 +21,8 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "We need another camera."
+        "NSCameraUsageDescription": "We need another camera.",
+        "NSPhotoLibraryAddUsageDescription": "We needs photo library permissions to allow you to upload profile images."
       }
     },
     "android": {
@@ -32,6 +33,14 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photoPermission": "The app accesses your photos to let your share them with your freinds"
+        }
+      ]
+    ]
   }
 }

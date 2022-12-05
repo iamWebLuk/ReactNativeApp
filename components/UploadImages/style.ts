@@ -11,6 +11,9 @@ const style = (color: string) =>
             backgroundColor: color,
             borderRadius: 50,
         },
+        text: {
+            color: color,
+        },
     });
 
 export default style;
