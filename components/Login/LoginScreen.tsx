@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, View, Text } from 'react-native';
 import style from './style';
 import useStarWars from './useStarWars';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, UserInfo } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { RootStackScreenProps } from '../../types';
 import { Snackbar, TextInput, Provider } from 'react-native-paper';
+import { UserContext, useUser } from '../../App';
+import firebase from 'firebase/compat';
 
 const LoginScreen = ({ navigation }: RootStackScreenProps<'LoginScreen'>) => {
     const [email, setEmail] = useState('');
@@ -16,9 +18,17 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'LoginScreen'>) => {
     const [isShown, setIsShown] = useState(false);
     const [isPasswordWrong, setIsPasswordWrong] = useState(false);
 
+    const user = useUser().user;
+
+    console.log('++++');
+    console.log(user);
+    console.log('++++');
+
     const handleShow = () => {
         setHidePassword(!hidePassword);
     };
+
+    console.log('email: ' + email);
 
     const handleLogin = () => {
         signInWithEmailAndPassword(auth, email, password)

@@ -5,7 +5,7 @@ import { StackActions } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput, Provider } from 'react-native-paper';
 import useStarWars from '../Login/useStarWars';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { FontAwesome } from '@expo/vector-icons';
 import style from '../Register/style';
@@ -15,6 +15,7 @@ const Register = ({
 }: RootStackScreenProps<'Register'>) => {
     const navigation = useNavigation();
 
+    const [displayName, setDisplayName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,6 +28,7 @@ const Register = ({
                 .then((usercredentials) => {
                     auth.signOut().then(() => {});
                     const user = usercredentials.user;
+                    updateProfile(user, { displayName });
                     console.log(user.email);
                 })
                 .catch((err) => {
@@ -66,6 +68,14 @@ const Register = ({
     return (
         // <View style={style.container}>
         <Provider>
+            <TextInput
+                placeholder={'Benutzernamen eingeben'}
+                value={displayName}
+                onChangeText={(text) => {
+                    setDisplayName(text);
+                    console.log(displayName);
+                }}
+            />
             <TextInput
                 placeholder={'Email eingeben'}
                 value={email}
